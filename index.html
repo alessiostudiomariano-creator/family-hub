@@ -9,240 +9,798 @@
             --bg-deep: #121417;
             --bg-card: #1c2026;
             --accent: #d4af37;
+            --accent-glow: rgba(212, 175, 55, 0.15);
             --text-main: #f0f2f5;
             --text-muted: #9ba1a6;
             --border: #2d333b;
             --success: #28a745;
             --danger: #cf6679;
+            --warning: #f59e0b;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
             background-color: var(--bg-deep);
             color: var(--text-main);
-            padding: 60px 0 80px 0;
-            min-height: 100vh;
+            padding-top: 60px;
+            padding-bottom: 70px;
+            height: 100vh;
+            overflow-x: hidden;
         }
 
         header {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 55px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
             background-color: var(--bg-card);
             border-bottom: 1px solid var(--border);
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 0 15px; z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+            z-index: 100;
         }
 
-        header h1 { font-size: 1.1rem; color: var(--accent); }
+        header h1 {
+            font-size: 1.1rem;
+            color: var(--accent);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
 
-        .btn-header {
+        .header-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-header-icon {
             background: rgba(212, 175, 55, 0.15);
             border: 1px solid var(--accent);
             color: var(--accent);
-            padding: 6px 12px; border-radius: 20px;
-            font-size: 0.8rem; font-weight: bold;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
-        .container { padding: 15px; max-width: 600px; margin: 0 auto; }
+        .container {
+            padding: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
 
         .card {
             background-color: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 16px; padding: 15px; margin-bottom: 15px;
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
         .card-title {
-            font-size: 1.05rem; color: var(--accent);
-            margin-bottom: 12px; display: flex;
-            justify-content: space-between; align-items: center;
-            border-bottom: 1px solid var(--border); padding-bottom: 8px;
+            font-size: 1.05rem;
+            color: var(--accent);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
         }
 
         .bottom-nav {
-            position: fixed; bottom: 0; left: 0; width: 100%; height: 65px;
-            background-color: var(--bg-card); border-top: 1px solid var(--border);
-            display: flex; justify-content: space-around; align-items: center; z-index: 1000;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: var(--bg-card);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
         }
 
         .nav-item {
-            background: none; border: none; color: var(--text-muted);
-            font-size: 0.75rem; display: flex; flex-direction: column;
-            align-items: center; gap: 3px; flex: 1; padding: 10px 0;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            cursor: pointer;
+            flex: 1;
+            padding: 5px 0;
         }
 
-        .nav-item.active { color: var(--accent); }
-        .nav-item span { font-size: 1.2rem; }
-
-        .tab-pane { display: none; }
-        .tab-pane.active { display: block; }
-
-        .input-row { display: flex; gap: 8px; margin-bottom: 10px; }
-        input, select {
-            background-color: var(--bg-deep); border: 1px solid var(--border);
-            color: var(--text-main); padding: 10px; border-radius: 10px; font-size: 0.9rem; outline: none;
+        .nav-item.active {
+            color: var(--accent);
         }
+
+        .nav-item span.icon {
+            font-size: 1.2rem;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        input, select, button {
+            background-color: var(--bg-deep);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
         input[type="text"] { flex: 2; }
         select { flex: 1; }
 
-        button.btn-main {
-            background-color: var(--accent); color: var(--bg-deep);
-            font-weight: bold; border: none; padding: 10px 15px; border-radius: 10px;
+        button.btn-accent {
+            background-color: var(--accent);
+            color: var(--bg-deep);
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
         }
         button.btn-danger {
-            background-color: var(--danger); color: #fff;
-            font-weight: bold; border: none; padding: 10px; border-radius: 10px; width: 100%;
+            background-color: var(--danger);
+            color: #fff;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+        button.btn-secondary {
+            background-color: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button.btn-success {
+            background-color: var(--success);
+            color: #fff;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
         }
 
-        ul { list-style: none; }
-        li.item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 0.9rem;
+        ul.styled-list {
+            list-style: none;
+            max-height: calc(100vh - 280px);
+            overflow-y: auto;
         }
-        li.item.done span { text-decoration: line-through; color: var(--text-muted); }
 
-        .menu-box {
-            background: rgba(255,255,255,0.02); border: 1px solid var(--border);
-            border-radius: 10px; padding: 10px; margin-bottom: 8px; font-size: 0.85rem;
+        li.list-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            font-size: 0.9rem;
         }
-        .menu-box h4 { color: var(--accent); margin-bottom: 4px; }
+
+        .item-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        li.list-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--accent);
+        }
+
+        li.list-item.completed span {
+            text-decoration: line-through;
+            color: var(--text-muted);
+            opacity: 0.6;
+        }
+
+        .btn-delete {
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 5px;
+        }
+
+        .badge-cat {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .menu-scroll-container {
+            max-height: calc(100vh - 220px);
+            overflow-y: auto;
+        }
+
+        .menu-day-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 8px;
+        }
+
+        .menu-day-card h4 {
+            color: var(--accent);
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 3px;
+        }
+
+        .menu-meal {
+            font-size: 0.8rem;
+            color: var(--text-main);
+            margin-bottom: 4px;
+            line-height: 1.3;
+        }
+
+        .menu-meal strong { color: var(--text-muted); }
+
+        .replacement-notice {
+            display: block;
+            color: var(--warning);
+            font-size: 0.75rem;
+            margin-top: 2px;
+            font-style: italic;
+        }
+
+        .ingredients-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+            max-height: 220px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+
+        .ingredient-chip {
+            background: var(--bg-deep);
+            border: 1px solid var(--border);
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+
+        .ingredient-chip.selected {
+            background: var(--accent-glow);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: flex-end;
+        }
+        .modal-card {
+            background: var(--bg-card);
+            border-top: 1px solid var(--accent);
+            border-radius: 20px 20px 0 0;
+            width: 100%;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+            margin-bottom: 12px;
+        }
+        .modal-header h3 { color: var(--accent); font-size: 1rem; }
+        .modal-body { overflow-y: auto; flex: 1; }
     </style>
 </head>
 <body>
 
     <header>
         <h1>✦ Family Hub</h1>
-        <button class="btn-header" onclick="alert('Sistema pronto su iOS!')">⚙️ Stato</button>
+        <div class="header-buttons">
+            <button class="btn-header-icon" onclick="openFridgeModal()">🧊 Frigo</button>
+            <button class="btn-header-icon" onclick="openSyncModal()">🔄 Sync</button>
+        </div>
     </header>
 
     <div class="container">
-        <!-- TAB 1: SPESA -->
-        <div id="tab-spesa" class="tab-pane active">
+        <!-- SCHEDA 1: SPESA -->
+        <div id="tab-spesa" class="tab-content active">
             <div class="card">
                 <div class="card-title">
-                    <span>🛒 Spesa</span>
-                    <button class="btn-main" onclick="generaMenu()" style="font-size:0.75rem; padding:6px 10px;">🎲 Menu</button>
+                    <span>🛒 Lista della spesa</span>
+                    <button class="btn-accent" style="padding: 4px 8px; font-size: 0.75rem;" onclick="generaMenuIntelligente()">🎲 Genera Menu</button>
                 </div>
                 <div class="input-row">
-                    <input type="text" id="itemInput" placeholder="Nuovo articolo...">
-                    <button class="btn-main" onclick="aggiungiSpesa()">+</button>
+                    <input type="text" id="newItemText" placeholder="Articolo..." oninput="handleGlobalSearch(this.value)">
+                    <select id="newItemCat">
+                        <option value="Ortofrutta">Ortofrutta</option>
+                        <option value="Freschi">Freschi</option>
+                        <option value="Dispensa">Dispensa</option>
+                        <option value="Macelleria">Macelleria</option>
+                        <option value="Casa/Varie">Casa/Varie</option>
+                    </select>
+                    <button class="btn-accent" onclick="addCustomShoppingItem()">+</button>
                 </div>
-                <ul id="shoppingList">
-                    <li class="item">
-                        <span onclick="toggleItem(this)" style="cursor:pointer;">Riso (Dispensa)</span>
-                        <button onclick="this.parentElement.remove()" style="background:none; border:none; color:var(--danger); font-size:1rem;">🗑️</button>
-                    </li>
-                </ul>
-                <div style="margin-top: 15px;">
-                    <button class="btn-danger" onclick="document.getElementById('shoppingList').innerHTML=''">Svuota Lista</button>
+                <ul class="styled-list" id="globalSearchSuggestions" style="display:none; margin-bottom: 8px;"></ul>
+                <ul class="styled-list" id="shoppingListUl"></ul>
+                <div style="margin-top: 10px; display: flex; gap: 8px;">
+                    <button class="btn-danger" style="flex: 1; font-size: 0.8rem; padding: 8px;" onclick="clearCart()">🗑️ Svuota</button>
                 </div>
             </div>
         </div>
 
-        <!-- TAB 2: ADULTI -->
-        <div id="tab-adulti" class="tab-pane">
+        <!-- SCHEDA 2: MENU ADULTI -->
+        <div id="tab-adulti" class="tab-content">
             <div class="card">
                 <div class="card-title">🍽️ Alessio & Federica</div>
-                <div id="adultMenuContainer">
-                    <p style="color:var(--text-muted); text-align:center; padding:15px;">Genera il menu dalla scheda Spesa.</p>
+                <div class="menu-scroll-container" id="menuAdultsContainer">
+                    <p style="color:var(--text-muted); text-align:center; padding:20px;">Premi "Genera Menu" nella scheda Spesa.</p>
                 </div>
             </div>
         </div>
 
-        <!-- TAB 3: AURELIANO -->
-        <div id="tab-baby" class="tab-pane">
+        <!-- SCHEDA 3: MENU AURELIANO -->
+        <div id="tab-baby" class="tab-content">
             <div class="card">
-                <div class="card-title">👶 Aureliano (17 mesi)</div>
-                <div id="babyMenuContainer">
-                    <p style="color:var(--text-muted); text-align:center; padding:15px;">Genera il menu dalla scheda Spesa.</p>
+                <div class="card-title" id="babyCardTitle">👶 Aureliano</div>
+                <div class="menu-scroll-container" id="menuBabyContainer">
+                    <p style="color:var(--text-muted); text-align:center; padding:20px;">Premi "Genera Menu" nella scheda Spesa.</p>
                 </div>
             </div>
         </div>
     </div>
 
     <nav class="bottom-nav">
-        <button class="nav-item active" onclick="cambiaTab('spesa', this)">
-            <span>🛒</span> Spesa
+        <button class="nav-item active" onclick="switchTab('spesa', this)">
+            <span class="icon">🛒</span>
+            <span>Spesa</span>
         </button>
-        <button class="nav-item" onclick="cambiaTab('adulti', this)">
-            <span>🍽️</span> Adulti
+        <button class="nav-item" onclick="switchTab('adulti', this)">
+            <span class="icon">🍽️</span>
+            <span>Adulti</span>
         </button>
-        <button class="nav-item" onclick="cambiaTab('baby', this)">
-            <span>👶</span> Aureliano
+        <button class="nav-item" onclick="switchTab('baby', this)">
+            <span class="icon">👶</span>
+            <span>Aureliano</span>
         </button>
     </nav>
 
+    <!-- MODALE FRIGORIFERO -->
+    <div class="modal-overlay" id="fridgeModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>🧊 Frigorifero & Ricette</h3>
+                <button class="btn-secondary" style="padding: 4px 8px; font-size:0.8rem;" onclick="closeFridgeModal()">✕ Chiudi</button>
+            </div>
+            <div class="modal-body">
+                <span class="badge-cat">➕ Nuova Ricetta</span>
+                <div class="input-row" style="margin-bottom: 6px;">
+                    <input type="text" id="newRecipeName" placeholder="Nome ricetta..." style="flex:2;">
+                </div>
+                <div class="input-row" style="margin-bottom: 12px;">
+                    <input type="text" id="newRecipeCarb" placeholder="Carboidrato" style="flex:1;">
+                    <input type="text" id="newRecipeProt" placeholder="Proteina" style="flex:1;">
+                    <input type="text" id="newRecipeVerd" placeholder="Verdura" style="flex:1;">
+                    <button class="btn-accent" onclick="aggiungiNuovaRicetta()">Salva</button>
+                </div>
+                <span class="badge-cat">Disponibilità Ingredienti in Casa</span>
+                <input type="text" id="searchIngText" style="width:100%; margin-bottom: 8px;" placeholder="🔍 Cerca ingrediente..." oninput="renderIngredients()">
+                <div class="ingredients-grid" id="ingredientsGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALE SYNC -->
+    <div class="modal-overlay" id="syncModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>🔄 Sincronizzazione</h3>
+                <button class="btn-secondary" style="padding: 4px 8px; font-size:0.8rem;" onclick="closeSyncModal()">✕ Chiudi</button>
+            </div>
+            <div class="modal-body">
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 12px;">
+                    Inserisci lo stesso codice stanza per condividere la spesa in tempo reale.
+                </p>
+                <div class="input-row" style="margin-bottom: 12px;">
+                    <input type="text" id="syncRoomInput" placeholder="codice-stanza">
+                    <button class="btn-success" onclick="collegaStanzaCloud()">Salva</button>
+                </div>
+                <p id="syncModalStatus" style="font-size: 0.8rem; color: var(--success);"></p>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Gestione Tab nativa immediata
-        function cambiaTab(tabName, el) {
-            document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            
-            document.getElementById('tab-' + tabName).classList.add('active');
-            el.classList.add('active');
+        function getAurelianoAge() {
+            const birthDate = new Date(2024, 11, 24);
+            const today = new Date();
+            let years = today.getFullYear() - birthDate.getFullYear();
+            let months = today.getMonth() - birthDate.getMonth();
+            if (months < 0 || (months === 0 && today.getDate() < birthDate.getDate())) { years--; months += 12; }
+            let totalMonths = (years * 12) + months;
+            return years > 0 ? `${years}a e ${months}m (${totalMonths}m)` : `${totalMonths} mesi`;
         }
 
-        function aggiungiSpesa() {
-            const input = document.getElementById('itemInput');
-            const val = input.value.trim();
+        function switchTab(tabId, btnElement) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            btnElement.classList.add('active');
+        }
+
+        let currentRoom = localStorage.getItem('family_sync_room') || 'famiglia-alessio-federica-2026';
+
+        function openFridgeModal() { renderIngredients(); document.getElementById('fridgeModal').style.display = 'flex'; }
+        function closeFridgeModal() { document.getElementById('fridgeModal').style.display = 'none'; }
+        function openSyncModal() {
+            document.getElementById('syncRoomInput').value = currentRoom;
+            document.getElementById('syncModalStatus').textContent = `Stanza attiva: ${currentRoom}`;
+            document.getElementById('syncModal').style.display = 'flex';
+        }
+        function closeSyncModal() { document.getElementById('syncModal').style.display = 'none'; }
+        function collegaStanzaCloud() {
+            const val = document.getElementById('syncRoomInput').value.trim();
             if(!val) return;
-            
-            const ul = document.getElementById('shoppingList');
-            const li = document.createElement('li');
-            li.className = 'item';
-            li.innerHTML = `
-                <span onclick="toggleItem(this)" style="cursor:pointer;">${val}</span>
-                <button onclick="this.parentElement.remove()" style="background:none; border:none; color:var(--danger); font-size:1rem;">🗑️</button>
-            `;
-            ul.appendChild(li);
-            input.value = '';
+            currentRoom = val;
+            localStorage.setItem('family_sync_room', currentRoom);
+            alert("Stanza aggiornata!");
+            closeSyncModal();
         }
 
-        function toggleItem(span) {
-            span.parentElement.classList.toggle('done');
+        const baseRicette = [
+            { id: 1, carb: "Farro", prot: "Uova", verd: "Piselli", nome: "Farro, Uova e Piselli", adulto: "Piatto bilanciato con olio EVO e spezie.", baby: "Ingredienti ben cotti e morbidi. Zero sale." },
+            { id: 2, carb: "Cous cous", prot: "Vitella magra", verd: "Peperoni", nome: "Cous cous, Vitella e Peperoni", adulto: "Piatto bilanciato con olio EVO e spezie.", baby: "Vitella sminuzzata finemente, verdure fondenti. Zero sale." },
+            { id: 3, carb: "Pane integrale", prot: "Ceci", verd: "Broccoli", nome: "Pane, Ceci e Broccoli", adulto: "Piatto bilanciato con olio EVO e spezie.", baby: "Ceci schiacciati, broccoli in crema. Zero sale." },
+            { id: 4, carb: "Orzo", prot: "Salmone", verd: "Melanzane", nome: "Orzo, Salmone e Melanzane", adulto: "Piatto bilanciato con olio EVO e spezie.", baby: "Salmone senza spine, melanzane morbide. Zero sale." },
+            { id: 5, carb: "Polenta", prot: "Ricotta vaccina", verd: "Spinaci", nome: "Polenta, Ricotta e Spinaci", adulto: "Piatto bilanciato con olio EVO e spezie.", baby: "Polenta morbida, spinaci tritati. Zero sale." },
+            { id: 6, carb: "Quinoa", prot: "Orata", verd: "Cavolfiore", nome: "Quinoa, Orata e Cavolfiore", adulto: "Piatto bilanciato con olio EVO e spezie.", baby: "Orata pulita e sminuzzata. Zero sale." },
+            { id: 7, carb: "Riso", prot: "Petto di tacchino", verd: "Zucca", nome: "Riso, Tacchino e Zucca", adulto: "Piatto bilanciato con olio EVO e spezie.", baby: "Tacchino in polpettine morbide, zucca in crema. Zero sale." },
+            { id: 8, carb: "Patate", prot: "Lenticchie rosse", verd: "Finocchi", nome: "Patate, Lenticchie e Finocchi", adulto: "Piatto bilanciato con olio EVO e spezie.", baby: "Patate schiacciate, lenticchie stracotte. Zero sale." },
+            { id: 9, carb: "Gnocchi di patate", prot: "Filetto di maiale", verd: "Carote", nome: "Gnocchi, Maiale e Carote", adulto: "Piatto bilanciato con olio EVO e spezie.", baby: "Maiale tritato tenerissimo. Zero sale." },
+            { id: 10, carb: "Pasta", prot: "Fagioli cannellini", verd: "Fagiolini", nome: "Pasta, Cannellini e Fagiolini", adulto: "Piatto bilanciato con olio EVO e spezie.", baby: "Pasta stracotta, fagiolini fini. Zero sale." }
+        ];
+
+        let databaseRicette = JSON.parse(localStorage.getItem('databaseRicette')) || baseRicette;
+        const giorniSettimana = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica"];
+
+        const masterSupermarketDatabase = [
+            { name: "Farro", cat: "Dispensa" }, { name: "Cous cous", cat: "Dispensa" }, { name: "Pane integrale", cat: "Dispensa" },
+            { name: "Orzo", cat: "Dispensa" }, { name: "Polenta", cat: "Dispensa" }, { name: "Quinoa", cat: "Dispensa" },
+            { name: "Riso", cat: "Dispensa" }, { name: "Patate", cat: "Ortofrutta" }, { name: "Gnocchi di patate", cat: "Freschi" },
+            { name: "Pasta", cat: "Dispensa" }, { name: "Uova", cat: "Freschi" }, { name: "Vitella magra", cat: "Macelleria" },
+            { name: "Ceci", cat: "Dispensa" }, { name: "Salmone", cat: "Macelleria" }, { name: "Ricotta vaccina", cat: "Freschi" },
+            { name: "Orata", cat: "Macelleria" }, { name: "Petto di tacchino", cat: "Macelleria" }, { name: "Lenticchie rosse", cat: "Dispensa" },
+            { name: "Filetto di maiale", cat: "Macelleria" }, { name: "Fagioli cannellini", cat: "Dispensa" }, { name: "Piselli", cat: "Ortofrutta" },
+            { name: "Peperoni", cat: "Ortofrutta" }, { name: "Broccoli", cat: "Ortofrutta" }, { name: "Melanzane", cat: "Ortofrutta" },
+            { name: "Spinaci", cat: "Ortofrutta" }, { name: "Cavolfiore", cat: "Ortofrutta" }, { name: "Zucca", cat: "Ortofrutta" },
+            { name: "Finocchi", cat: "Ortofrutta" }, { name: "Carote", cat: "Ortofrutta" }, { name: "Fagiolini", cat: "Ortofrutta" }
+        ];
+
+        let masterIngredients = JSON.parse(localStorage.getItem('masterIngredients')) || masterSupermarketDatabase.map(i => ({...i, active: true}));
+        let shoppingList = JSON.parse(localStorage.getItem('shoppingList')) || [{ text: "Riso", category: "Dispensa", completed: false }];
+        let generatedAdultMenu = JSON.parse(localStorage.getItem('generatedAdultMenu')) || null;
+        let generatedBabyMenu = JSON.parse(localStorage.getItem('generatedBabyMenu')) || null;
+
+        function saveState() {
+            localStorage.setItem('masterIngredients', JSON.stringify(masterIngredients));
+            localStorage.setItem('shoppingList', JSON.stringify(shoppingList));
+            localStorage.setItem('databaseRicette', JSON.stringify(databaseRicette));
+            localStorage.setItem('generatedAdultMenu', JSON.stringify(generatedAdultMenu));
+            localStorage.setItem('generatedBabyMenu', JSON.stringify(generatedBabyMenu));
         }
 
-        function generaMenu() {
-            const giorni = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica"];
-            const piatti = [
-                { nome: "Farro, Uova e Piselli", adulto: "Piatto bilanciato con olio EVO.", baby: "Morbido e senza sale." },
-                { nome: "Cous cous e Vitella", adulto: "Con verdure fondenti.", baby: "Vitella sminuzzata finemente." },
-                { nome: "Riso, Tacchino e Zucca", adulto: "Speziato al punto giusto.", baby: "Polpettine di tacchino e crema di zucca." },
-                { nome: "Pasta, Cannellini e Fagiolini", adulto: "Classico casereccio.", baby: "Pasta stracotta, verdura fine." }
-            ];
+        function renderIngredients() {
+            const grid = document.getElementById('ingredientsGrid');
+            const query = document.getElementById('searchIngText').value.toLowerCase();
+            grid.innerHTML = '';
+            masterIngredients.filter(i => i.name.toLowerCase().includes(query)).forEach((ing) => {
+                const realIndex = masterIngredients.findIndex(item => item.name === ing.name);
+                const chip = document.createElement('div');
+                chip.className = `ingredient-chip ${ing.active ? 'selected' : ''}`;
+                chip.innerHTML = `<span>${ing.name}</span> <small>${ing.active ? '✓' : ''}</small>`;
+                chip.onclick = () => { masterIngredients[realIndex].active = !masterIngredients[realIndex].active; saveState(); renderIngredients(); };
+                grid.appendChild(chip);
+            });
+        }
+
+        function aggiungiNuovaRicetta() {
+            const nome = document.getElementById('newRecipeName').value.trim();
+            const carb = document.getElementById('newRecipeCarb').value.trim();
+            const prot = document.getElementById('newRecipeProt').value.trim();
+            const verd = document.getElementById('newRecipeVerd').value.trim();
+            if(!nome || !carb || !prot || !verd) { alert("Compila tutti i campi!"); return; }
+            databaseRicette.push({ id: databaseRicette.length + 1, carb, prot, verd, nome, adulto: `Piatto bilanciato (${carb}, ${prot}, ${verd}).`, baby: `Preparazione morbida a misura di bimbo. Zero sale.` });
+            document.getElementById('newRecipeName').value = '';
+            document.getElementById('newRecipeCarb').value = '';
+            document.getElementById('newRecipeProt').value = '';
+            document.getElementById('newRecipeVerd').value = '';
+            saveState();
+            renderIngredients();
+            alert("Ricetta aggiunta con successo!");
+        }
+
+        function handleGlobalSearch(query) {
+            const suggestionBox = document.getElementById('globalSearchSuggestions');
+            suggestionBox.innerHTML = '';
+            if(!query.trim()) { suggestionBox.style.display = 'none'; return; }
+            const matches = masterSupermarketDatabase.filter(i => i.name.toLowerCase().includes(query.toLowerCase())).slice(0, 3);
+            if(matches.length > 0) {
+                suggestionBox.style.display = 'block';
+                matches.forEach(m => {
+                    let li = document.createElement('li');
+                    li.className = 'list-item';
+                    li.innerHTML = `<span>${m.name} (${m.cat})</span> <button class="btn-accent" style="padding:2px 6px; font-size:0.7rem;" onclick="addSuggestedItem('${m.name}', '${m.cat}')">+</button>`;
+                    suggestionBox.appendChild(li);
+                });
+            } else { suggestionBox.style.display = 'none'; }
+        }
+
+        function addSuggestedItem(name, cat) {
+            shoppingList.push({ text: name, category: cat, completed: false });
+            document.getElementById('newItemText').value = '';
+            document.getElementById('globalSearchSuggestions').style.display = 'none';
+            saveState();
+            renderShoppingList();
+        }
+
+        function addCustomShoppingItem() {
+            const textInput = document.getElementById('newItemText');
+            const catSelect = document.getElementById('newItemCat');
+            const text = textInput.value.trim();
+            if(!text) return;
+            shoppingList.push({ text, category: catSelect.value, completed: false });
+            textInput.value = '';
+            document.getElementById('globalSearchSuggestions').style.display = 'none';
+            saveState();
+            renderShoppingList();
+        }
+
+        function renderShoppingList() {
+            const ul = document.getElementById('shoppingListUl');
+            ul.innerHTML = '';
+            if(shoppingList.length === 0) {
+                ul.innerHTML = '<p style="color:var(--text-muted); text-align:center; padding:15px;">Lista della spesa vuota.</p>';
+                return;
+            }
+            shoppingList.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.className = `list-item ${item.completed ? 'completed' : ''}`;
+                li.innerHTML = `
+                    <div class="item-left" onclick="toggleShoppingItem(${index})">
+                        <input type="checkbox" ${item.completed ? 'checked' : ''}>
+                        <span>${item.text} <small style="color:var(--text-muted);">(${item.category})</small></span>
+                    </div>
+                    <button class="btn-delete" onclick="removeShoppingItem(${index})">🗑️</button>
+                `;
+                ul.appendChild(li);
+            });
+        }
+
+        function toggleShoppingItem(index) {
+            shoppingList[index].completed = !shoppingList[index].completed;
+            saveState();
+            renderShoppingList();
+        }
+
+        // --- FUNZIONE DI CANCELLAZIONE CON NOTIFICA VISIVA NEL MENU ---
+        function removeShoppingItem(index) {
+            const itemToRemove = shoppingList[index];
+            if (itemToRemove && generatedAdultMenu) {
+                const removedIngredient = itemToRemove.text.toLowerCase();
+                
+                let masterMatch = masterIngredients.find(m => m.name.toLowerCase() === removedIngredient);
+                if (masterMatch) {
+                    masterMatch.active = false;
+                }
+
+                let replacedCount = 0;
+
+                giorniSettimana.forEach((giorno, idx) => {
+                    let dayAdult = generatedAdultMenu[idx];
+                    let dayBaby = generatedBabyMenu[idx];
+
+                    if (dayAdult.lunchRaw && (dayAdult.lunchRaw.carb.toLowerCase() === removedIngredient || dayAdult.lunchRaw.prot.toLowerCase() === removedIngredient || dayAdult.lunchRaw.verd.toLowerCase() === removedIngredient)) {
+                        let oldName = dayAdult.lunchRaw.nome;
+                        let newRecipe = trovaRicettaAlternativa([removedIngredient]);
+                        if (newRecipe) {
+                            dayAdult.lunchRaw = newRecipe;
+                            dayAdult.lunchText = `${newRecipe.nome} — ${newRecipe.adulto}`;
+                            dayAdult.lunchNotice = `⚠️ Questo pasto è stato sostituito con "${newRecipe.nome}" (mancava: ${itemToRemove.text})`;
+                            
+                            dayBaby.lunchText = `${newRecipe.nome} — ${newRecipe.baby}`;
+                            dayBaby.lunchNotice = `⚠️ Questo pasto è stato sostituito con "${newRecipe.nome}" (mancava: ${itemToRemove.text})`;
+                            replacedCount++;
+                        }
+                    }
+
+                    if (dayAdult.dinnerRaw && (dayAdult.dinnerRaw.carb.toLowerCase() === removedIngredient || dayAdult.dinnerRaw.prot.toLowerCase() === removedIngredient || dayAdult.dinnerRaw.verd.toLowerCase() === removedIngredient)) {
+                        let oldName = dayAdult.dinnerRaw.nome;
+                        let newRecipe = trovaRicettaAlternativa([removedIngredient]);
+                        if (newRecipe) {
+                            dayAdult.dinnerRaw = newRecipe;
+                            dayAdult.dinnerText = `${newRecipe.nome} — ${newRecipe.adulto}`;
+                            dayAdult.dinnerNotice = `⚠️ Questo pasto è stato sostituito con "${newRecipe.nome}" (mancava: ${itemToRemove.text})`;
+                            
+                            dayBaby.dinnerText = `${newRecipe.nome} — ${newRecipe.baby}`;
+                            dayBaby.dinnerNotice = `⚠️ Questo pasto è stato sostituito con "${newRecipe.nome}" (mancava: ${itemToRemove.text})`;
+                            replacedCount++;
+                        }
+                    }
+                });
+
+                if (replacedCount > 0) {
+                    alert(`Hai eliminato "${itemToRemove.text}". ${replacedCount} pasto/i sono stati aggiornati nel menu.`);
+                }
+            }
+
+            shoppingList.splice(index, 1);
+            saveState();
+            renderShoppingList();
+            renderIngredients();
+            if(generatedAdultMenu) renderMenus();
+        }
+
+        function trovaRicettaAlternativa(excludedIngredients) {
+            let disponibili = databaseRicette.filter(r => {
+                let ingredientiRicetta = [r.carb.toLowerCase(), r.prot.toLowerCase(), r.verd.toLowerCase()];
+                return !ingredientiRicetta.some(ing => excludedIngredients.includes(ing));
+            });
+            if (disponibili.length > 0) {
+                return disponibili[Math.floor(Math.random() * disponibili.length)];
+            }
+            return databaseRicette[Math.floor(Math.random() * databaseRicette.length)];
+        }
+
+        function clearCart() {
+            if(confirm("Vuoi svuotare la lista?")) { 
+                shoppingList = []; 
+                saveState(); 
+                renderShoppingList(); 
+            }
+        }
+
+        function generaMenuIntelligente() {
+            generatedAdultMenu = [];
+            generatedBabyMenu = [];
+            const activeSet = new Set(masterIngredients.filter(i => i.active).map(i => i.name.toLowerCase()));
+            let pool = [...databaseRicette].sort(() => 0.5 - Math.random());
+            let index = 0;
+
+            giorniSettimana.forEach(giorno => {
+                let r1 = pool[index++ % pool.length];
+                let r2 = pool[index++ % pool.length];
+
+                [r1, r2].forEach(r => {
+                    [r.carb, r.prot, r.verd].forEach(ingName => {
+                        if (!activeSet.has(ingName.toLowerCase())) {
+                            let found = masterSupermarketDatabase.find(m => m.name.toLowerCase() === ingName.toLowerCase());
+                            let cat = found ? found.cat : "Dispensa";
+                            if (!shoppingList.some(s => s.text.toLowerCase() === ingName.toLowerCase())) {
+                                shoppingList.push({ text: ingName, category: cat, completed: false });
+                            }
+                        }
+                    });
+                });
+
+                generatedAdultMenu.push({ 
+                    day: giorno, 
+                    lunchText: `${r1.nome} — ${r1.adulto}`, 
+                    dinnerText: `${r2.nome} — ${r2.adulto}`,
+                    lunchRaw: r1,
+                    dinnerRaw: r2,
+                    lunchNotice: '',
+                    dinnerNotice: ''
+                });
+                generatedBabyMenu.push({ 
+                    day: giorno, 
+                    lunchText: `${r1.nome} — ${r1.baby}`, 
+                    dinnerText: `${r2.nome} — ${r2.baby}`,
+                    lunchNotice: '',
+                    dinnerNotice: ''
+                });
+            });
+
+            saveState();
+            renderMenus();
+            renderShoppingList();
+            alert("Menu generato con successo! Gli ingredienti mancanti sono finiti nella spesa.");
+        }
+
+        function renderMenus() {
+            const adultsContainer = document.getElementById('menuAdultsContainer');
+            const babyContainer = document.getElementById('menuBabyContainer');
+            document.getElementById('babyCardTitle').innerHTML = `👶 Aureliano (${getAurelianoAge()})`;
+
+            if(!generatedAdultMenu) return;
 
             let adultHtml = '';
-            let babyHtml = '';
-
-            giorni.forEach((g, idx) => {
-                let p1 = piatti[idx % piatti.length];
-                let p2 = piatti[(idx + 1) % piatti.length];
-
+            generatedAdultMenu.forEach(item => {
                 adultHtml += `
-                    <div class="menu-box">
-                        <h4>${g}</h4>
-                        <div><strong>Pranzo:</strong> ${p1.nome} — ${p1.adulto}</div>
-                        <div style="margin-top:4px;"><strong>Cena:</strong> ${p2.nome} — ${p2.adulto}</div>
-                    </div>`;
-
-                babyHtml += `
-                    <div class="menu-box">
-                        <h4>${g}</h4>
-                        <div><strong>Pranzo:</strong> ${p1.nome} — ${p1.baby}</div>
-                        <div style="margin-top:4px;"><strong>Cena:</strong> ${p2.nome} — ${p2.baby}</div>
+                    <div class="menu-day-card">
+                        <h4>${item.day}</h4>
+                        <div class="menu-meal">
+                            <strong>Pranzo:</strong> ${item.lunchText}
+                            ${item.lunchNotice ? `<span class="replacement-notice">${item.lunchNotice}</span>` : ''}
+                        </div>
+                        <div class="menu-meal" style="margin-top: 6px;">
+                            <strong>Cena:</strong> ${item.dinnerText}
+                            ${item.dinnerNotice ? `<span class="replacement-notice">${item.dinnerNotice}</span>` : ''}
+                        </div>
                     </div>`;
             });
 
-            document.getElementById('adultMenuContainer').innerHTML = adultHtml;
-            document.getElementById('babyMenuContainer').innerHTML = babyHtml;
-            alert("Menu generato con successo!");
+            let babyHtml = '';
+            generatedBabyMenu.forEach(item => {
+                babyHtml += `
+                    <div class="menu-day-card">
+                        <h4>${item.day}</h4>
+                        <div class="menu-meal">
+                            <strong>Pranzo:</strong> ${item.lunchText}
+                            ${item.lunchNotice ? `<span class="replacement-notice">${item.lunchNotice}</span>` : ''}
+                        </div>
+                        <div class="menu-meal" style="margin-top: 6px;">
+                            <strong>Cena:</strong> ${item.dinnerText}
+                            ${item.dinnerNotice ? `<span class="replacement-notice">${item.dinnerNotice}</span>` : ''}
+                        </div>
+                    </div>`;
+            });
+
+            adultsContainer.innerHTML = adultHtml;
+            babyContainer.innerHTML = babyHtml;
         }
+
+        renderShoppingList();
+        renderIngredients();
+        if(generatedAdultMenu) renderMenus();
     </script>
 </body>
 </html>
