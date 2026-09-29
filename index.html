@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Family Hub</title>
+    <style>
+        :root {
+            --bg-deep: #121417;
+            --bg-card: #1c2026;
+            --accent: #d4af37;
+            --text-main: #f0f2f5;
+            --text-muted: #9ba1a6;
+            --border: #2d333b;
+            --danger: #cf6679;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            padding: 60px 0 80px 0;
+            min-height: 100vh;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 55px;
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+            z-index: 1000;
+        }
+
+        header h1 {
+            font-size: 1.1rem;
+            color: var(--accent);
+        }
+
+        .container {
+            padding: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 1.05rem;
+            color: var(--accent);
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 65px;
+            background-color: var(--bg-card);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .nav-item {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            flex: 1;
+            padding: 10px 0;
+            cursor: pointer;
+        }
+
+        .nav-item.active {
+            color: var(--accent);
+        }
+
+        .nav-item span {
+            font-size: 1.2rem;
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        input {
+            background-color: var(--bg-deep);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            outline: none;
+            flex: 2;
+        }
+
+        button.btn-main {
+            background-color: var(--accent);
+            color: var(--bg-deep);
+            font-weight: bold;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        button.btn-danger {
+            background-color: var(--danger);
+            color: #fff;
+            font-weight: bold;
+            border: none;
+            padding: 10px;
+            border-radius: 10px;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        li.item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            font-size: 0.9rem;
+        }
+
+        li.item.done span {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        .menu-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+        }
+
+        .menu-box h4 {
+            color: var(--accent);
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>✦ Family Hub</h1>
+    </header>
+
+    <div class="container">
+        <!-- TAB 1: SPESA -->
+        <div id="tab-spesa" class="tab-pane active">
+            <div class="card">
+                <div class="card-title">
+                    <span>🛒 Spesa</span>
+                    <button class="btn-main" onclick="generaMenu()" style="font-size:0.75rem; padding:6px 10px;">🎲 Menu</button>
+                </div>
+                <div class="input-row">
+                    <input type="text" id="itemInput" placeholder="Nuovo articolo...">
+                    <button class="btn-main" onclick="aggiungiSpesa()">+</button>
+                </div>
+                <ul id="shoppingList">
+                    <li class="item">
+                        <span onclick="toggleItem(this)" style="cursor:pointer;">Riso (Dispensa)</span>
+                        <button onclick="rimuoviElemento(this)" style="background:none; border:none; color:var(--danger); font-size:1rem; cursor:pointer;">🗑️</button>
+                    </li>
+                </ul>
+                <div style="margin-top: 15px;">
+                    <button class="btn-danger" onclick="svuotaSpesa()">Svuota Lista</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: ADULTI -->
+        <div id="tab-adulti" class="tab-pane">
+            <div class="card">
+                <div class="card-title">🍽️ Alessio & Federica</div>
+                <div id="adultMenuContainer">
+                    <p style="color:var(--text-muted); text-align:center; padding:15px;">Genera il menu dalla scheda Spesa.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: AURELIANO -->
+        <div id="tab-baby" class="tab-pane">
+            <div class="card">
+                <div class="card-title">👶 Aureliano (17 mesi)</div>
+                <div id="babyMenuContainer">
+                    <p style="color:var(--text-muted); text-align:center; padding:15px;">Genera il menu dalla scheda Spesa.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <button class="nav-item active" onclick="cambiaTab('spesa', this)">
+            <span>🛒</span> Spesa
+        </button>
+        <button class="nav-item" onclick="cambiaTab('adulti', this)">
+            <span>🍽️</span> Adulti
+        </button>
+        <button class="nav-item" onclick="cambiaTab('baby', this)">
+            <span>👶</span> Aureliano
+        </button>
+    </nav>
+
+    <script>
+        function cambiaTab(tabName, el) {
+            document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            
+            document.getElementById('tab-' + tabName).classList.add('active');
+            el.classList.add('active');
+        }
+
+        function aggiungiSpesa() {
+            const input = document.getElementById('itemInput');
+            const val = input.value.trim();
+            if(!val) return;
+            
+            const ul = document.getElementById('shoppingList');
+            const li = document.createElement('li');
+            li.className = 'item';
+            li.innerHTML = `
+                <span onclick="toggleItem(this)" style="cursor:pointer;">${val}</span>
+                <button onclick="rimuoviElemento(this)" style="background:none; border:none; color:var(--danger); font-size:1rem; cursor:pointer;">🗑️</button>
+            `;
+            ul.appendChild(li);
+            input.value = '';
+            salvaDati();
+        }
+
+        function toggleItem(span) {
+            span.parentElement.classList.toggle('done');
+            salvaDati();
+        }
+
+        function rimuoviElemento(btn) {
+            btn.parentElement.remove();
+            salvaDati();
+        }
+
+        function svuotaSpesa() {
+            document.getElementById('shoppingList').innerHTML = '';
+            salvaDati();
+        }
+
+        function generaMenu() {
+            const giorni = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica"];
+            const piatti = [
+                { nome: "Farro, Uova e Piselli", adulto: "Piatto bilanciato con olio EVO.", baby: "Morbido e senza sale." },
+                { nome: "Cous cous e Vitella", adulto: "Con verdure fondenti.", baby: "Vitella sminuzzata finemente." },
+                { nome: "Riso, Tacchino e Zucca", adulto: "Speziato al punto giusto.", baby: "Polpettine di tacchino e crema di zucca." },
+                { nome: "Pasta, Cannellini e Fagiolini", adulto: "Classico casereccio.", baby: "Pasta stracotta, verdura fine." }
+            ];
+
+            let adultHtml = '';
+            let babyHtml = '';
+
+            giorni.forEach((g, idx) => {
+                let p1 = piatti[idx % piatti.length];
+                let p2 = piatti[(idx + 1) % piatti.length];
+
+                adultHtml += `
+                    <div class="menu-box">
+                        <h4>${g}</h4>
+                        <div><strong>Pranzo:</strong> ${p1.nome} — ${p1.adulto}</div>
+                        <div style="margin-top:4px;"><strong>Cena:</strong> ${p2.nome} — ${p2.adulto}</div>
+                    </div>`;
+
+                babyHtml += `
+                    <div class="menu-box">
+                        <h4>${g}</h4>
+                        <div><strong>Pranzo:</strong> ${p1.nome} — ${p1.baby}</div>
+                        <div style="margin-top:4px;"><strong>Cena:</strong> ${p2.nome} — ${p2.baby}</div>
+                    </div>`;
+            });
+
+            document.getElementById('adultMenuContainer').innerHTML = adultHtml;
+            document.getElementById('babyMenuContainer').innerHTML = babyHtml;
+            
+            try {
+                localStorage.setItem('family_adult_menu', adultHtml);
+                localStorage.setItem('family_baby_menu', babyHtml);
+            } catch(e) {}
+
+            alert("Menu generato con successo!");
+        }
+
+        function salvaDati() {
+            try {
+                const listHTML = document.getElementById('shoppingList').innerHTML;
+                localStorage.setItem('family_shopping_list', listHTML);
+            } catch(e) {}
+        }
+
+        function caricaDati() {
+            try {
+                const savedList = localStorage.getItem('family_shopping_list');
+                const savedAdult = localStorage.getItem('family_adult_menu');
+                const savedBaby = localStorage.getItem('family_baby_menu');
+
+                if(savedList) document.getElementById('shoppingList').innerHTML = savedList;
+                if(savedAdult) document.getElementById('adultMenuContainer').innerHTML = savedAdult;
+                if(savedBaby) document.getElementById('babyMenuContainer').innerHTML = savedBaby;
+            } catch(e) {}
+        }
+
+        window.onload = caricaDati;
+    </script>
+</body>
+</html>
